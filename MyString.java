@@ -4,11 +4,22 @@
 public class MyString {
     public static void main(String args[]) {
         String hello = "hello";
-        System.out.println(countChar(hello, 'h'));
-        System.out.println(countChar(hello, 'l'));
-        System.out.println(countChar(hello, 'z'));
-        System.out.println(spacedString(hello));
-        //// Put your other tests here.
+        System.out.println(countChar(hello, 'h')); // Should return 1
+        System.out.println(countChar(hello, 'l')); // Should return 2
+        System.out.println(countChar(hello, 'z')); // Should return 0
+        System.out.println(spacedString(hello)); // Should return "h e l l o"
+        
+        // Additional tests
+        System.out.println(subsetOf("sap", "space")); // true
+        System.out.println(subsetOf("spa", "space")); // true
+        System.out.println(subsetOf("pass", "space")); // false
+        System.out.println(subsetOf("c", "space")); // true
+        
+        System.out.println(randomStringOfLetters(5)); // Example: a random string like "abcde"
+        
+        System.out.println(insertRandomly('x', "cat")); // Should return a string with 'x' inserted at a random position
+        
+        System.out.println(remove("meet", "committee")); // Expected: "comit"
     }
 
     /**
@@ -20,8 +31,18 @@ public class MyString {
      * @return the number of times c appears in str
      */
     public static int countChar(String str, char ch) {
-        //// Replace the following statement with your code
-        return 0;
+        // Convert string and char to lowercase
+        str = str.toLowerCase();
+        ch = Character.toLowerCase(ch);
+        
+        // Count occurrences
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == ch) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /** Returns true if str1 is a subset string str2, false otherwise
@@ -36,8 +57,29 @@ public class MyString {
      * @return true is str1 is a subset of str2, false otherwise
      */
     public static boolean subsetOf(String str1, String str2) {
-         //// Replace the following statement with your code
-        return false;
+         // Loop through each character in str1
+    for (int i = 0; i < str1.length(); i++) {
+        char currentChar = str1.charAt(i);
+        boolean found = false;
+
+        // Search for the current character in str2
+        for (int j = 0; j < str2.length(); j++) {
+            if (str2.charAt(j) == currentChar) {
+                // Mark the character as "used" by changing it to a placeholder (e.g., '\0')
+                str2 = str2.substring(0, j) + str2.substring(j + 1);
+                found = true;
+                break;
+            }
+        }
+
+        // If a character in str1 couldn't find a match in str2, return false
+        if (!found) {
+            return false;
+        }
+    }
+
+    // All characters matched successfully
+    return true;
     }
 
     /** Returns a string which is the same as the given string, with a space
@@ -49,8 +91,14 @@ public class MyString {
      * @return a string consisting of the characters of str, separated by spaces.
      */
     public static String spacedString(String str) {
-        //// Replace the following statement with your code
-        return null;
+        String result = "";
+        for (int i = 0; i < str.length(); i++) {
+            result += str.charAt(i);
+            if (i < str.length() - 1) {
+                result += " ";
+            }
+        }
+        return result;
     }
   
     /**
@@ -64,8 +112,13 @@ public class MyString {
      * @return a randomly generated string, consisting of 'n' lowercase letters
      */
     public static String randomStringOfLetters(int n) {
-        //// Replace the following statement with your code
-        return null;
+        String str = "";
+        for (int i = 0; i < n; i++) {
+            char randomCh = (char) ('a' + Math.random() * 26);
+            str += randomCh;
+        }
+        return str;
+    
     }
 
     /**
@@ -78,8 +131,27 @@ public class MyString {
      * @return a string consisting of str1 minus all the characters of str2
      */
     public static String remove(String str1, String str2) {
-       //// Replace the following statement with your code
-        return null;
+         // Count the occurrences of each character in str2
+         int[] counts = new int[26]; // Array for counting characters ('a' to 'z')
+        
+         for (int j = 0; j < str2.length(); j++) {
+             counts[str2.charAt(j) - 'a']++;
+         }
+ 
+         String result = "";
+         
+         // Loop through each character in str1
+         for (int i = 0; i < str1.length(); i++) {
+             char currentChar = str1.charAt(i);
+             // Check if we still have to remove this character
+             if (counts[currentChar - 'a'] > 0) {
+                 counts[currentChar - 'a']--; // Remove it
+             } else {
+                 result += currentChar; // Keep this character
+             }
+         }
+ 
+         return result;
     }
 
     /**
