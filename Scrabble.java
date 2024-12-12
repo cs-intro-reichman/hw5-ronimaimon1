@@ -65,22 +65,26 @@ public class Scrabble {
 	public static int wordScore(String word) {
 		int score = 0;
 
-		// Calculate the sum of letter values
-		for (char c : word.toCharArray()) {
-			if (c >= 'a' && c <= 'z') { // Ensure the letter is a valid English lowercase letter
-				score += SCRABBLE_LETTER_VALUES[c - 'a'];
-			}
-		}
-	
-		// Multiply by the length of the word
-		score *= word.length();
-	
-		// Check if the sequence "runi" is in the word
-		if (word.contains("runi")) {
-			score += 1000; // Add the bonus
-		}
-	
-		return score;
+    // Calculate the base score by summing up the values of each letter
+    for (char c : word.toCharArray()) {
+        // Adjust the index to calculate scores for each letter
+        score += SCRABBLE_LETTER_VALUES[c - 'a'];
+    }
+
+    // Multiply the base score by the length of the word
+    score *= word.length();
+
+    // If the word uses all letters in the initial hand, add a 50-point bonus
+    if (word.length() == HAND_SIZE) {
+        score += 50;
+    }
+
+    // Check if the word contains the substring "runi" and add the 1000-point bonus if true
+    if (word.contains("runi")) {
+        score += 1000;
+    }
+
+    return score;
 	}
 
 	// Creates a random hand of length (HAND_SIZE - 2) and then inserts
@@ -142,7 +146,7 @@ public class Scrabble {
         	} 
 			else {
             	// If the word is invalid, either not in the dictionary or not valid based on the hand, prompt again
-            	System.out.println("No such word in the dictionary or invalid letters. Try again.");
+            	System.out.println("Invalid word. Try again.");
         	}
     	}
 
