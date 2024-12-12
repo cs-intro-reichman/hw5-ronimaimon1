@@ -131,28 +131,27 @@ public class MyString {
      * @return a string consisting of str1 minus all the characters of str2
      */
     public static String remove(String str1, String str2) {
-        String result = "";
+         // Count the occurrences of each character in str2
+         int[] counts = new int[26]; // Array for counting characters ('a' to 'z')
         
-        // Loop through each character in str1
-        for (int i = 0; i < str1.length(); i++) {
-            char currentChar = str1.charAt(i);
-
-            // If the current character is NOT in str2, append it
-            if (!isInStr2(currentChar, str2)) {
-                result += currentChar; // Concatenate characters manually
-            }
-        }
-
-        return result;
-    }
-
-    public static boolean isInStr2(char ch, String str2) {
-        for (int i = 0; i < str2.length(); i++) {
-            if (str2.charAt(i) == ch) {
-                return true;
-            }
-        }
-        return false;
+         for (int j = 0; j < str2.length(); j++) {
+             counts[str2.charAt(j) - 'a']++;
+         }
+ 
+         String result = "";
+         
+         // Loop through each character in str1
+         for (int i = 0; i < str1.length(); i++) {
+             char currentChar = str1.charAt(i);
+             // Check if we still have to remove this character
+             if (counts[currentChar - 'a'] > 0) {
+                 counts[currentChar - 'a']--; // Remove it
+             } else {
+                 result += currentChar; // Keep this character
+             }
+         }
+ 
+         return result;
     }
 
     /**
